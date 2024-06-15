@@ -103,20 +103,8 @@ alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo
 # ~/.bash_aliases, instead of adding them here directly.
 # See /usr/share/doc/bash-doc/examples in the bash-doc package.
 
-if [ -f ~/.bash_aliases ]; then
-    . /home/slym/.bash_aliases
-fi
-
-if [ -f ~/.bash_functions ]; then
-    . /home/slym/.bash_functions
-fi
-
 if [ -f ~/.bash_add_ons ]; then
     . /home/slym/.bash_add_ons
-fi
-
-if [ -f ~/.pnpm_complete ]; then
-    . /home/slym/.pnpm_complete
 fi
 
 # enable programmable completion features (you don't need to enable
@@ -130,13 +118,3 @@ if ! shopt -oq posix; then
   fi
 fi
 
-# make backups of bash config files
-\cp -u ~/.bashrc ~/.bashrc.BAK
-\cp -u ~/.bashrc ~/GitHub/setup/ziploc/bash.files/.bashrc.BAK
-\cp -u ~/.bash_aliases ~/.bash_aliases.BAK
-\cp -u ~/.bash_aliases ~/GitHub/setup/ziploc/bash.files/.bash_aliases.BAK
-\cp -u ~/.bash_functions ~/.bash_functions.BAK
-\cp -u ~/.bash_functions ~/GitHub/setup/ziploc/bash.files/.bash_functions.BAK
-\cp -u ~/.bash_add_ons ~/.bash_add_ons.BAK
-\cp -u ~/.bash_add_ons ~/GitHub/setup/ziploc/bash.files/.bash_add_ons.BAK
-\cp -u ~/.scripts/* ~/GitHub/setup/ziploc/scripts/
