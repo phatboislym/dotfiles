@@ -1,0 +1,75 @@
+# source additional bash config files
+if [ -f ~/.bash_aliases ]; then
+    . /home/slym/.bash_aliases
+fi
+
+if [ -f ~/.bash_functions ]; then
+    . /home/slym/.bash_functions
+fi
+
+if [ -f ~/.bash_secrets ]; then
+    . /home/slym/.bash_secrets
+fi
+
+if [ -f ~/.pnpm_complete ]; then
+    . /home/slym/.pnpm_complete
+fi
+
+# make backups of bash config files
+\cp -u ~/.bashrc ~/.bashrc.BAK
+\cp -u ~/.bashrc ~/GitHub/setup/ziploc/bash.files/.bashrc.BAK
+\cp -u ~/.bash_aliases ~/.bash_aliases.BAK
+\cp -u ~/.bash_aliases ~/GitHub/setup/ziploc/bash.files/.bash_aliases.BAK
+\cp -u ~/.bash_functions ~/.bash_functions.BAK
+\cp -u ~/.bash_functions ~/GitHub/setup/ziploc/bash.files/.bash_functions.BAK
+\cp -u ~/.bash_add_ons ~/.bash_add_ons.BAK
+\cp -u ~/.bash_add_ons ~/GitHub/setup/ziploc/bash.files/.bash_add_ons.BAK
+\cp -u ~/.scripts/* ~/GitHub/setup/ziploc/scripts/
+
+# add directories to PATH
+export PATH="$PATH:/home/slym/.scripts:/home/.tsc/bin:/home/linuxbrew/.linuxbrew/bin:/usr/local/pgsql/bin:/usr/local/go/bin:$GOPATH/bin"
+
+# trim prompt to pwd                                                           
+# PROMPT_DIRTRIM=2 
+
+# load cargo 
+. "$HOME/.cargo/env"  
+
+# load starship
+eval "$(starship init bash)" 
+
+# set EDITOR 
+EDITOR=nano
+
+# colors for man pages
+export LESS_TERMCAP_mb=$'\E[01;31m'                                            
+export LESS_TERMCAP_md=$'\E[01;31m'                                            
+export LESS_TERMCAP_me=$'\E[0m'                                                
+export LESS_TERMCAP_se=$'\E[0m'                                                
+export LESS_TERMCAP_so=$'\E[01;44;33m'                                         
+export LESS_TERMCAP_ue=$'\E[0m'                                                
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+# Go settings
+export GOPATH=/home/slym/.go
+
+# PostgreSQL settings
+export PGDATA="/var/lib/postgresql/data"
+export LD_LIBRARY_PATH="/usr/local/pgsql/lib:$LD_LIBRARY_PATH"
+
+# TSC/TS-NODE settings
+export TS_NODE_PROJECT=/home/slym/.tsc/tsconfig.json
+export TSC_DEFAULT=/home/slym/.tsc/tsconfig.json
+
+# set bat as MANPAGER
+# export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export timestamp=$(date '+%Y-%m-%d %H-%M-%S')
+# less config
+# export LESS="-NR"
+# export LESSOPEN="| /usr/share/source-highlight/src-hilite-lesspipe.sh %s"
+
+# zuri virtualenv
+alias zuri='source zuri/bin/activate'
+
+# bash improvements
+set -o pipefail

@@ -1,0 +1,249 @@
+# nala wrapper for apt
+function apt() { command nala "$@"; }
+
+function sudo() {
+  if [ "$1" = "apt" ]; then
+    shift
+    command sudo nala "$@"
+  else
+    command sudo "$@"
+  fi
+}
+
+# wrapper to invoke iPython instead of Python REPL
+function python() { 
+  if [ "$#" -ge 1 ]; then
+  	command python3 "$@"
+  else
+  	command ipython
+  fi
+}
+
+# wrapper to handle exercism CLI and exercism dir
+function exercism() { 
+  if [ "$#" -ge 1 ]; then
+  	command exercism "$@"
+  else
+	cd ~/GitHub/self-paced/exercism/typescript/
+  fi
+}
+
+# create directory and jump to directory
+# function teleport() { mkdir -p "$@" && eval cd "\"\$$#\""; } #old version
+function teleport() { mkdir -p "$1" && cd "$1"; }
+
+# history for commands and utilities
+function usage() { \history | grep $1; }
+
+# cd into directory and list files
+function spy() { cd "$1" && list; }
+
+# copy files to pwd
+function grab() { cp -irv "$@" .; }
+
+# copy files to pwd
+function move() { mv -iv "$@" .; }
+
+# search aliases
+# function aka() { alias | grep -i $*; }
+
+# ls that excludes by file extension
+function exclude() { ls -I *"$1"*; }
+
+function forecast() { curl wttr.in/"$1"; }
+
+function weather() { curl wttr.in/"$1"?format=3; }
+
+# function that copies to clipboard
+function copy() { \cat "$1" | clip; }
+
+# function that searches for a word in a file and returns the count
+# function count() { grep "$1" "$2" | wc -l; }
+function count() { grep -cw "$1" "$3"; }
+
+# function that returns history line numbers for a keyword
+function entries() { \history | grep "$1" | awk '{print $1}' | xargs; }
+
+# function that deletes history items by history line number
+function erase() { \history -d "$1"; }
+
+# function that extracts data from a database and dumps it in a json
+# $1: database $2: table $3: output json file
+function db2json() { sqlite3 -header -json "$1" "SELECT * FROM "$2"" | jq '.' > "$3"; }
+
+# function that changes directory to ziploc and runs the backup script
+function ziploc() { cd /home/slym/GitHub/setup/ziploc/bash.files/ && bash backup; }
+
+# function that creates files from README
+function stubs() { grep "(" README.md | cut -d "(" -f 2 | cut -d ")" -f 1 | xargs touch; }
+
+# function that compiles a Typescript file to JavaScript and then runs the JavaScript file
+# --target ES5|ES2015|ES2016|ES2017|ES2018|ESNEXT ES3 is default
+function tsx() {
+		jsfile="${1%.ts}.js"
+
+		npx tsc --target ES2015 "$1" && node "$jsfile"
+	}
+
+# function that checks the first line of a text file
+function firstline() { 
+	expected="#!/usr/bin/env python3"
+	first_line=$(head -n 1 "$1")
+	if [ "$first_line" = "$expected" ]; then
+		echo "first line of script matches expected path to interpreter"
+	else
+		echo "first line of script does not match expected path to interpreter"
+	fi
+	}
+
+# function that runs some checks on a python script
+function precheck() { mypy "$1" && pycodestyle "$1" && firstline "$1" && doccheck "$1"; }
+
+# function that deletes pycache
+function pycache() { \find . -name __pycache__ -type d -exec rm -r {} +; }
+
+# function that deletes mypycache
+function mypycache() { \find . -name .mypy_cache -type d -exec rm -r {} +; }
+
+# function that deletes mypycache
+function pytestcache() { \find . -name .pytest_cache -type d -exec rm -r {} +; }
+
+# function that deletes py and mypy caches
+function decache() { pycache && mypycache && pytestcache; }
+
+# function that searches for node module directories and lets you delete them
+function demodule () {
+  find . -name "node_modules" -type d |
+  xargs du -sh | sort -hr |
+  fzf -m --header "Select directories to delete" --preview 'cat $(dirname {})/package.json' |
+  awk '{print $2}' | xargs -r rm -rf;
+}
+
+# function that makes a backup of a file
+function backup() {
+  if [ -f "$1" ]; then
+      cp "$1" "$1.BAK"
+      echo "backup of $1 created as $1.BAK"
+  else
+      echo "file not found: $1"
+  fi
+ }
+
+# function that updates pip packages
+function pip.update() { pip3 list --outdated --format=freeze | grep -v '^\-e' | cut -d = -f 1 | xargs -n1 pip3 install -U; }
+
+# function that checks for a pip package
+function pipcheck() { pip list | grep -Ei "$1"; }
+
+# function that clears the local package lists and update them from the repositories
+function apt.reset() { sudo apt-get clean && sudo rm -rf /var/lib/apt/lists/* && sudo apt-get update; }
+
+# function that adds execute permissions to all python files in a directory recuresively
+function plus-x() { chmod +x $(find . -name '*.py'); }
+
+# function that initializes a git repository
+function init() { git init && cp -f /home/slym/Tools/files/gitignore .gitignore && cp -f /home/slym/Tools/files/config .git/config; }
+
+# functions that runs betty lint check on a file and if it passes, compiles it with a custom gcc compiler string
+function butter() { betty "$@" && \gcc -Wall -Wextra -Werror -pedantic -std=gnu89 "$@" -o $(basename -s .c $_) && ./$(basename -s .c $_); }
+
+# function that starts a docker container and runs a mount mapping the current directory to the app directory in the container
+function docker-up() { docker build -t portfolio . && docker run -v $(pwd):/app portfolio; }
+# docker run --mount type=bind,source=$(pwd),target=/app portfolio */
+
+# function that starts a bash session in the running container
+function start() { name=$(docker ps --format "{{.Names}}"); docker exec -it $name bash; }
+
+# function that checks if CWD is a virtual environment
+function isVirtual() {
+  if [[ $VIRTUAL_ENV ]]; then
+    echo "yes"
+  else
+    echo "no"
+  fi
+}
+
+# function that starts an existing virtual environment and checks if CWD is a virtual environment
+function goVirtual() { 
+  	if [[ $VIRTUAL_ENV ]]; then
+  	  echo "In a virtual environment";
+  	else
+	  source venv/bin/activate;
+  	  echo -n "virtual environment name: ";
+  	  echo $VIRTUAL_ENV | cut -d '/' -f 8;
+  	fi;
+}
+
+# function that cd's into portfolio project directory
+function shawarmaco() { cd /home/slym/GitHub/ALX/specializations/sharwarma.co/; }
+
+# function that list the last 10 modified files in a directory
+function current() { local number="${1:-10}"
+  list -l -r -snew | head -n "$number"; }
+
+# function that opens an image in xviewer in the background
+# function viewer() { xviewer "$1" & ; }
+
+# function that creates a C header file with some boilerplate
+function header() {
+  file=$1
+  macro=$(echo "$1" | tr a-z A-Z | tr . _) 
+  touch "$file"
+
+  echo "#ifndef "$macro"" >> "$file"
+  echo "#define "$macro"" >> "$file"
+  echo "" >> "$file" 
+  echo "#endif" >> "$file"
+  vim "$file"
+}
+
+# copy file with a progress bar
+prettycopy()
+{
+	set -e
+	strace -q -ewrite cp -- "${1}" "${2}" 2>&1 \
+	| awk '{
+	count += $NF
+	if (count % 10 == 0) {
+		percent = count / total_size * 100
+		printf "%3d%% [", percent
+		for (i=0;i<=percent;i++)
+			printf "="
+			printf ">"
+			for (i=percent;i<100;i++)
+				printf " "
+				printf "]\r"
+			}
+		}
+	END { print "" }' total_size=$(stat -c '%s' "${1}") count=0
+}
+
+# copy and go to the directory
+cpg()
+{
+	if [ -d "$2" ];then
+		cp $1 $2 && cd $2
+	else
+		cp $1 $2
+	fi
+}
+
+# move and go to the directory
+mvg()
+{
+	if [ -d "$2" ];then
+		mv $1 $2 && cd $2
+	else
+		mv $1 $2
+	fi
+}
+
+# automatically do an ls after each cd
+scd()
+{
+	if [ -n "$1" ]; then
+		builtin cd "$@" && ls
+	else
+		builtin cd ~ && ls
+	fi
+}

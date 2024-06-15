@@ -1,0 +1,174 @@
+# autocorrect for cd
+shopt -s cdspell
+
+# C aliases
+alias gcc='gcc -Wall -Wextra -Werror -pedantic -std=gnu89'
+
+# change directory aliases                                                     
+alias home='cd ~'                                                              
+alias ~='cd ~'
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+# chmod aliases
+alias 000='chmod -R --preserve-root 000'
+alias 444='chmod -R --preserve-root 444'
+alias 600='chmod -R --preserve-root 600'
+alias 644='chmod -R --preserve-root 644'
+alias 666='chmod -R --preserve-root 666'
+alias 700='chmod -R --preserve-root 700'
+alias 744='chmod -R --preserve-root 744'
+alias 755='chmod -R --preserve-root 755'
+alias 764='chmod -R --preserve-root 764'
+alias 777='chmod -R --preserve-root 777'
+alias chmod='chmod --preserve-root'
+alias minusx='chmod --preserve-root a-x'
+alias plusx='chmod --preserve-root a+x'
+
+# CLI magic
+alias crypto='curl -s rate.sx'
+alias server='python -m http.server -b "::"'
+alias speedtest='curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python -'
+
+# Docker aliases
+alias sandbox='docker run -it ubuntu:22.04 bash'
+
+# drop in aliases
+alias cat='bat'
+alias dir='exa'
+alias tree='exa --tree'
+
+# file, search and directory manipulation improvements
+alias cp='cp -irv'
+alias directories="exa -l -D" # directories only
+alias files="ls -l | egrep -v '^d'" # files only
+# alias find='exa -a */ | grep -i $1'
+alias list='exa --git --icons --color=always --group-directories-first'
+alias lookup='grep –r -l'
+alias mkdir='mkdir -pv'
+alias mv='mv -bivS .bak'
+alias rm='rm -iv'
+alias rmdir='rm -irv'
+
+# git aliases
+alias add="git add"
+alias blame="git blame"
+alias branch="git branch"
+alias checkout="git checkout"
+alias clone="x.bash"
+alias commit="git commit"
+# alias init="git init"
+alias insight="git shortlog -s -n"
+alias log="git log --graph --oneline --decorate | less"
+alias merge="git merge"
+alias pull="git pull"
+alias push="git push"
+alias revert="git revert"
+alias show='git show'
+alias stage='git.sh'
+alias stash="git stash"
+alias status="git status | less"
+alias switch="git switch"
+function gdiff { git diff "$1" "$2" | less; }
+
+# history
+alias history='history | less'
+alias recent='\history | tail -30 | less '
+
+# JavaScript aliases
+alias autolint='npx eslint --fix'
+alias eslint='npx eslint'
+# alias jest='npm test'
+alias lint='quick-lint-js'
+alias run='npx babel-node'
+alias semi='semistandard --fix'
+# alias start-server='npm run start-server'
+# alias test='yarn test'
+# alias tsc='npx tsc'
+
+# navigation aliases
+alias 100DoC='cd ~/GitHub/self-paced/100DoC/'
+alias github='cd ~/GitHub/'
+alias findme='cd ~/GitHub/projects/findme/'
+alias facility='cd ~/GitHub/projects/faciltyapp/'
+alias leetcode='cd ~/Tests/LeetCode/'
+
+# other aliases
+alias cflags=' gcc -Wall -Wextra -Werror -pedantic'
+alias chrome='google-chrome'
+alias copilot='gh copilot'
+alias clip='xclip -selection clipboard'
+alias default='gio open'
+alias enter='entr'
+alias free='free -h'
+alias google='ddgr'
+alias jump='autojump'
+# alias kimba='perl kimba'
+alias kimba='perl ~/.scripts/kimba'
+alias lowercase='tr A-Z a-z'
+alias now='date +"%T"'
+alias nextjs='cd /home/slym/Documents/Courses/Academind/NextJS'
+alias path='echo -e ${PATH//:/\\n}'
+alias reboot='sudo shutdown -r now'
+alias pushit='git.bash'
+alias redo="fc"
+alias refresh='reset; list'
+alias reload='source ~/.bashrc'
+alias stacer=" Stacer &"
+alias submit='exercism submit'
+alias sudo='sudo '
+alias uppercase='tr a-z A-Z'
+alias uptime='uptime -p'
+alias viewer='xviewer'
+
+# other flag improvements
+alias jobs='jobs -l'
+alias ping='ping -c 5'
+alias wget='wget -c'
+
+# package manager aliases
+alias apt-get='sudo apt-get'
+alias dnf='nala'
+alias install='sudo apt install '
+alias uninstall='sudo apt remove '
+alias update='sudo apt-get update && sudo apt-get upgrade'
+alias yum='nala'
+
+# Python aliases
+alias autopep8='autopep8 --in-place --aggressive --aggressive'
+alias doctest='python3 -m doctest -v'
+alias pep8='pycodestyle --show-source --show-pep8 --statistics -qq'
+alias pip-update='pip freeze --local | grep -v '^\-e' | cut -d = -f 1  | xargs -n1 pip install -U'
+alias pyclean='\find . -name __pycache__ -type d -exec rm -r {} +'
+alias unittest='python3 -m unittest -v'
+alias uvicorn='uvicorn app:app --reload'
+
+# SQL aliases
+alias pgsql='psql -h localhost -p 5432 -U postgres'
+
+# ssh aliases
+alias mark-1='ssh mark-1'
+alias mark-2='ssh mark-2'
+alias mark-3='ssh mark-3'
+alias mark-4='ssh mark-4'
+
+# system info aliases
+alias computer='hostnamectl'
+alias distro='lsb_release -a'
+alias memory='cat /proc/meminfo'
+alias os='cat /etc/os-release'
+alias shells='cat /etc/shells'
+alias storage='df -H | head -1 > ~/Tools/df.txt && df -H | tail -1 >> ~/Tools/df.txt && cat ~/Tools/df.txt' 
+alias version='lsb_release -d'
+
+# text editor aliases
+alias emacs='emacsclient -t -a ""' 
+alias helix='flatpak run com.helix_editor.Helix'
+# alias vi='~/.local/squashfs-root/AppRun '
+# alias vim='~/.local/squashfs-root/AppRun '
+# alias neovim='~/.local/squashfs-root/AppRun '
+# alias nvim='~/.local/squashfs-root/AppRun '
+
+#TypeScript aliases
+alias tsn='ts-node'
